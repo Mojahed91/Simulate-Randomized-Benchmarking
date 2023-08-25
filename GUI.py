@@ -160,7 +160,7 @@ def GUI():
     button_3cnot.grid(row=15, column=0)
     button_4cnot.grid(row=16, column=0)
 
-    label_gates = Label(depolarized_noise_eq, text=" gate for interleaved", pady=5, fg="red")
+    label_gates = Label(depolarized_noise_eq, text="Interleaved gate", pady=5, fg="red")
     gate_interleaved = StringVar()
     options_gate = [
         "CNOT",
@@ -176,7 +176,7 @@ def GUI():
     label_gates.grid(row=0, column=3)
     drop.grid(row=1, column=3)
 
-    label_noisy_gate = Label(depolarized_noise_eq, text="noise matrix on gate", pady=5, fg="red")
+    label_noisy_gate = Label(depolarized_noise_eq, text="Type of Quantum channel", pady=5, fg="red")
     noisy_gate = StringVar()
     options_noisy_gate = [
         "no noise",

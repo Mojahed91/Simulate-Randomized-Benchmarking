@@ -1,4 +1,4 @@
-# Simulate-Randomized-Benchmarking
+# Simulated Randomized Benchmarking and Iinterleaved RB under the effect of coherent errors and several quantum channels
 This repository aiming to simulate the behavior of randomised benchmarking and interleaved RB under the effect of coherent errors and different types of quantum channels
 
 <p align="center">

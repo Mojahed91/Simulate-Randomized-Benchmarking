@@ -1,6 +1,6 @@
 # Simulating Randomized Benchmarking and Interleaved RB
 
-This project offers a comprehensive simulation of both randomized benchmarking (RB) and interleaved RB. We've designed the simulation to account for the effect introduced by coherent errors, as well as the implications of various quantum channels.
+This project offers a comprehensive simulation of both randomized benchmarking (RB) and interleaved RB. We've designed the simulation to account for the effect introduced by coherent errors, as well as the implications of various quantum channels. To utilize this GUI framework, you'll need to modify several parameters, which we'll outline in the following sections.
 
 ## Parameters Description
 

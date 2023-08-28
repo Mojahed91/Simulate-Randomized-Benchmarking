@@ -638,11 +638,16 @@ def show_details_nrb(p, epc_nrb, model_nrb, shots, alpha_nrb, theta, noise, ax):
 
 def run(noise_type, max_seq, p_interleaved, p_normal, theta, shots, interleaved, gate_interleaved,
         y_scale, showThtavsRatio, showPvsRatio, noisy_gate_, stringth_noise_, coherent_on, num_cnot):
+    
+    # Global variables for use in other parts of the code (outside this function)
     global e, e_, p1, interleave, max_seq_length, log_scale, rep_num, noisy_gate_matrix, \
         eps, coherent_error_on, num_of_cnot, theta_coherent
 
+    # Set up a figure and axis for plotting
     fig = plt.figure(figsize=(12, 8))
     ax = fig.add_subplot()
+    
+    # Select the noise matrix based on the noise type
     if noise_type == 0:
         noise_matrix = ground_state_noise
         noise = "ground_state_noise"
@@ -650,6 +655,7 @@ def run(noise_type, max_seq, p_interleaved, p_normal, theta, shots, interleaved,
         noise_matrix = mixed_state_noise
         noise = "mixed_state_noise"
 
+    # Initialize some global and local parameters
     num_of_cnot = num_cnot + 1
     coherent_error_on = coherent_on
     eps = stringth_noise_
@@ -660,26 +666,31 @@ def run(noise_type, max_seq, p_interleaved, p_normal, theta, shots, interleaved,
     log_scale = y_scale
     noisy_gate_matrix = noisy_matrix_type(noisy_gate_, eps)
     theta_coherent = theta
-    # I_ = np.identity(num_of_states * 2)
+
+    # Calculating some quantum operations
     e_ = expm(1j * theta_coherent * pauli_Interleaved)
     e = expm(-1j * theta_coherent * pauli_Interleaved)
-
     rho_initial = np.kron([[1, 0], [0, 0]], [[1, 0], [0, 0]])
-
     yes_plot = 1
 
+    # Interleave condition
     if interleave:
         global p2, gate_irb, str_gate_irb
+        
+        # Settings specific for interleaved RB
         p2 = p_interleaved
         p = p_interleaved
         gate_irb = irb_gate_type(gate_interleaved)[0]
         str_gate_irb = irb_gate_type(gate_interleaved)[1]
         str_type = "Interleaved RB with " + str_gate_irb
+        
+        # Model and plot for interleaved RB
         model_irb = noise_model_repetition(noise_matrix, rho_initial, rep_num)
         alpha_irb = fit_and_plot_data(model_irb[0], model_irb[1], rep_num,
                                       max_seq_length, ax, p, 'r', str_type, yes_plot)
         epc_irb = str(epc(alpha_irb, 2))
-
+        
+        # Settings for normal RB (not interleaved)
         interleave = 0
         p = p_normal
         str_type = "normal RB"
@@ -689,22 +700,24 @@ def run(noise_type, max_seq, p_interleaved, p_normal, theta, shots, interleaved,
         epc_nrb = str(epc(alpha_nrb, 2))
         show_details_irb(epc_nrb, epc_irb, shots, alpha_irb, alpha_nrb, theta, noise, ax)
 
+        # Outputting results
         op = alpha_irb/alpha_nrb
-
         print("\n\n\n _    interleave    IRB")
         print("alpha = " + str(op))
         print("2EPC = " + str(2 * epc(op, 2)))
         print("EPC = " + str(epc(op, 2)))
+    
     else:
+        # Handling normal RB (not interleaved)
         p = p_normal
         str_type = "normal RB"
         model_nrb = noise_model_repetition(noise_matrix, rho_initial, rep_num)
         alpha_nrb = fit_and_plot_data(model_nrb[0], model_nrb[1], rep_num, max_seq_length, ax, p, 'b', str_type,
                                       yes_plot)
         epc_nrb = str(epc(alpha_nrb, 2))
-
         show_details_nrb(p, epc_nrb, model_nrb, shots, alpha_nrb, theta, noise, ax)
 
+    # Plot adjustments and conditions for different scales
     plt.legend("p = 0.99", loc="upper right")
     if log_scale:
         plt.yscale("log")
@@ -717,6 +730,7 @@ def run(noise_type, max_seq, p_interleaved, p_normal, theta, shots, interleaved,
         axxx = fig_p.add_subplot()
         p_vs_ratio(axxx, noise_matrix, rho_initial, rep_num, max_seq_length)
 
+    # Display the plot
     plt.show()
 
 
